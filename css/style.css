@@ -1,0 +1,131 @@
+.dark {
+	background-color: #dd9e0a;
+	color: white;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+.dark:hover {
+	background-color: #946a06;
+}
+.light {
+	background-color: #fae6b1;
+	border: 0px;
+	color: black;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+.light:hover {
+	background-color: #b7a982;
+}
+.secondary-dark {
+	background-color: #31525b;
+	color: white;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+.secondary-dark:hover {
+	background-color: #182a2e;
+}
+.secondary-light {
+	background-color: #b3dee5;
+	color: black;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+.secondary-light:hover {
+	background-color: #6e8a8e;
+}
+.gamewindow {
+	width: 1200px;
+	height: 600px;
+	border: 5px solid black;
+}
+#StatusMenu {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 1190px;
+}
+#Status2 {
+	position: absolute;
+	top: 0px;
+	height: 35px;
+	width: 1190px;
+}
+.buttonborder {
+	border: 1px double white;
+}
+.main {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	height: 540px;
+	width: 1190px;
+	background-color: #f4eedc;
+}
+#panel {
+	position: absolute;
+	top: 30px;
+	width: 1190px;
+	height: 510px;
+	background-color: #f4eedc;
+}
+#descript {
+	height: 300px;
+}
+#option {
+	height: 200px;
+}
+#showStorage {
+	height: 510px;
+	border: 1px dashed black;
+}
+#showDetails {
+	height: 510px;
+	border: 1px dashed black;
+}
+.shopbutton {
+	height: 100px;
+	width: 150px;
+	border: 1px solid black;
+	text-align: center;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+.shopbuttonpanel {
+	height: 110px;
+}
+.seedbutton {
+	height: 30pt;
+	width: 50pt;
+	border: 1px solid black;
+	text-align: center;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+#note {
+	height: 170px;
+	width: 1190px;
+	border: 1px dotted grey;
+}
+.materialbutton {
+	height: 30px;
+	width: 100px;
+	border: 1px solid black;
+	text-align: center;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+.selectMaterial {
+	height: 100px;
+	width: 1190px;
+	position: absolute;
+	bottom: 0px;
+}
+@font-face {
+	font-family: "title";
+	src: url("../font/ErZiYuanHuTaoQiHeiTi-2.ttf");
+}

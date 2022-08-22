@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>炼金少女打工日记</title>
+		<meta charset="utf-8" />
+		<script src="js/vue.js"></script>
+		<script src="js/uikit.min.js"></script>
+		<script src="js/uikit.js"></script>
+		<script src="js/uikit-icons.min.js"></script>
+		<script src="js/uikit-icons.js"></script>
+		<link rel="stylesheet" href="css/uikit-rtl.css" />
+		<link rel="stylesheet" href="css/uikit-rtl.min.css" />
+		<link rel="stylesheet" href="css/uikit.css" />
+		<link rel="stylesheet" href="css/uikit.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<div
+			class="gamewindow uk-position-center"
+			style="background-color: #fae6b1"
+		>
+			<div
+				id="StartMenu"
+				class="uk-background-cover uk-background-norepeat"
+				style="
+					background-image: url(Resources/bg3.jpg);
+					width: 1190px;
+					height: 590px;
+				"
+			>
+				<div
+					class="uk-position-center"
+					v-if="visible"
+					style="
+						width: 500px;
+						height: 400px;
+						background-color: #fae6b1;
+						opacity: 0.7;
+						text-align: center;
+						border: 3px black;
+					"
+				>
+					<h1
+						style="
+							font-family: 'title';
+							font-size: 56px;
+							color: black;
+							position: absolute;
+							top: 20px;
+							left: 30px;
+						"
+					>
+						炼金少女打工日记
+					</h1>
+					<div class="uk-position-center" id="StartButton">
+						<input
+							type="button"
+							value="开始游戏"
+							@click="startGame"
+							class="uk-button uk-button-default uk-button-large dark"
+						/>
+					</div>
+				</div>
+				<div
+					id="story"
+					class="dark"
+					style="
+						font-family: 'title';
+						font-size: 30px;
+						color: black;
+						background-color: #fae6b1;
+						height: 590px;
+					"
+					v-show="storyvisible"
+				>
+					<p>我是一名炼金师。</p>
+					<p>我出生在一个偏远的小山村里。</p>
+					<p>为了精进我的炼金水平，我只身一人来到了中心城。</p>
+					<p>这里有着我一直很向往的，最好的炼金学院。</p>
+					<p>但是来到中心城后，我才发现：</p>
+					<p>我身上带着的那点金币，远远不够进入学院学习的开销，</p>
+					<p>甚至连房租都付不起。</p>
+					<p>于是，我开始了用炼金术赚钱的打工生活……</p>
+					<input
+						type="button"
+						class="uk-button uk-button-small dark uk-position-bottom-right"
+						value="开始"
+						@click="clickstart"
+					/>
+				</div>
+			</div>
+			<div id="StatusMenu" v-if="visible">
+				<p class="dark">
+					天数：{{Days}}| 金钱：{{Money}}| 体力：{{Energy}}|
+					物价指数：{{MarketRate*100}}%
+				</p>
+				<p class="uk-flex uk-flex-middle uk-child-width-1-1" id="Status2">
+					<input
+						type="button"
+						value="主菜单"
+						@click="clickMain"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="仓库"
+						@click="clickStorage"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="商店"
+						@click="clickShop"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="探索地图"
+						@click="clickMap"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="种植"
+						@click="clickFarm"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="炼金"
+						@click="clickCraft"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+					<input
+						type="button"
+						value="下一天"
+						@click="clickNextDay"
+						class="uk-button uk-button-small light buttonborder"
+					/>
+				</p>
+			</div>
+			<div
+				id="MainMenu"
+				v-if="visible"
+				class="main uk-background-cover uk-background-norepeat"
+				style="background-image: url(Resources/bg1.jpg)"
+			>
+				<img
+					data-src="Resources/000.png"
+					width="200"
+					height="500"
+					class="uk-position-bottom-center"
+					uk-img
+				/>
+				<input
+					type="button"
+					style="height: 500px; width: 200px; opacity: 0"
+					class="uk-position-center"
+					@click="clickImage"
+				/>
+				<div
+					class="light"
+					style="
+						text-align: center;
+						height: 150px;
+						width: 330px;
+						opacity: 0.7;
+						position: absolute;
+						bottom: 50px;
+						left: 100px;
+					"
+				>
+					{{show}}
+				</div>
+			</div>
+			<div id="StorageMenu" v-show="visible" class="main">
+				<div id="selectType" class="uk-flex uk-flex-middle uk-child-width-1-1">
+					<input
+						type="button"
+						value="材料"
+						@click="clickMaterial"
+						class="uk-button secondary-dark uk-button-small buttonborder"
+					/>
+					<input
+						type="button"
+						value="种子"
+						@click="clickSeed"
+						class="uk-button secondary-dark uk-button-small buttonborder"
+					/>
+					<input
+						type="button"
+						value="药水"
+						@click="clickPotion"
+						class="uk-button secondary-dark uk-button-small buttonborder"
+					/>
+				</div>
+				<div id="panel">
+					<div id="showStorage" class="uk-width-1-3 uk-position-left">
+						<input
+							type="button"
+							v-for="item in getMaterials()"
+							v-bind:value="item.name"
+							v-show="MaterialVisible"
+							class="uk-width-1-1 uk-button-small dark buttonborder"
+							@click="clickMaterialItem(item.id)"
+						/>
+						<input
+							type="button"
+							v-for="item in getSeeds()"
+							v-bind:value="item.name"
+							v-show="SeedVisible"
+							class="uk-width-1-1 uk-button-small dark buttonborder"
+							@click="clickSeedItem(item.id)"
+						/>
+						<input
+							type="button"
+							v-for="item in getPotions()"
+							v-bind:value="item.name"
+							v-show="PotionVisible"
+							class="uk-width-1-1 uk-button-small dark buttonborder"
+							@click="clickPotionItem(item.id)"
+						/>
+					</div>
+					<div id="showDetails" class="uk-width-2-3 uk-position-right">
+						<div
+							class="uk-padding uk-padding-large uk-box-shadow-large uk-position-top uk-text-center"
+							id="descript"
+						>
+							{{DescriptionShow}}
+						</div>
+						<div class="uk-position-bottom uk-fieldset" id="option">
+							<input
+								type="text"
+								class="uk-input uk-box-shadow-large uk-child-width-1-2"
+								id="Sellnum"
+								placeholder="卖出数量"
+							/>
+							<input
+								type="submit"
+								value="卖出"
+								@click="clickSell"
+								class="uk-width-1-1 uk-button-small dark buttonborder"
+							/>
+							<input
+								type="button"
+								v-show="PotionVisible"
+								value="使用"
+								@click="clickUse"
+								class="uk-width-1-1 uk-button-small dark buttonborder"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div
+				id="ShopMenu"
+				v-show="visible"
+				class="main uk-background-cover uk-background-norepeat"
+				style="background-image: url(Resources/bg08a.jpg)"
+			>
+				<div
+					class="shopbuttonpanel uk-width-1-1 uk-position-center uk-flex uk-flex-center"
+				>
+					<input
+						type="button"
+						v-bind:value="value1"
+						@click="clickShop1"
+						class="shopbutton dark"
+					/>
+					<input
+						type="button"
+						v-bind:value="value2"
+						@click="clickShop2"
+						class="shopbutton dark uk-margin-xlarge-left"
+					/>
+					<input
+						type="button"
+						v-bind:value="value3"
+						@click="clickShop3"
+						class="shopbutton dark uk-margin-xlarge-left"
+					/>
+				</div>
+			</div>
+			<div
+				id="ExploreMenu"
+				v-show="visible"
+				class="main uk-background-cover uk-background-norepeat"
+				style="background-image: url(Resources/bg2.jpg)"
+			>
+				<div class="uk-flex uk-flex-wrap uk-flex-wrap-center">
+					<input
+						type="button"
+						v-for="map in Maps"
+						v-bind:value="map.name+' 价格：'+map.price"
+						@click="clickMap(map.id)"
+						class="shopbutton dark uk-margin-large-left uk-margin-large-right uk-margin-large-top uk-margin-large-bottom"
+					/>
+				</div>
+			</div>
+			<div
+				id="PlantMenu"
+				v-show="visible"
+				class="main uk-flex uk-flex-wrap uk-flex-wrap"
+			>
+				<div id="PotsMenu">
+					<input
+						type="button"
+						v-for="pot in Pots"
+						v-bind:value="value[pot.id]"
+						v-bind:potid="pot.id"
+						class="shopbutton dark uk-margin-large-left uk-margin-large-right uk-margin-top uk-margin-bottom"
+						@click="clickPot"
+					/>
+					<hr style="border: 1px dashed grey" />
+					<div id="selectSeed" v-show="showSeeds">
+						<h5 style="position: absolute; left: 10px; top: 310px">
+							请选择要种植的种子：
+						</h5>
+						<input
+							type="button"
+							v-for="item in getSeeds()"
+							v-bind:value="item.name"
+							@click="clickSeed(item.id)"
+							class="seedbutton secondary-light uk-margin-left uk-margin-top"
+						/>
+					</div>
+				</div>
+			</div>
+			<div id="CraftMenu" v-show="visible" class="main">
+				<div class="secondary-dark" id="note">
+					<h4 style="color: white">炼金指南：</h4>
+					<ul>
+						<li>所有的药水都需要三种不同的元素炼制</li>
+						<li>
+							元素共有金、木、水、火、土五种，可以从不同的炼金材料中提取，且一种材料只能提取出一种元素
+						</li>
+						<li>
+							一次炼金中只能使用三种材料各一份，否则过量的元素可能导致事故发生
+						</li>
+						<li>
+							不同的炼金材料含有的元素量丰富程度不同，药剂中含有的元素量越多，品质就可能越好
+						</li>
+						<li>
+							只有当药剂中的三种元素均达到一定的丰富程度后，药剂的品质才有可能提高
+						</li>
+					</ul>
+				</div>
+				<div class="uk-flex uk-flex-center uk-flex-wrap uk-flex-wrap-center">
+					<input
+						type="button"
+						v-model:value="value[0]"
+						@click="selectMaterial1(0)"
+						class="shopbutton dark uk-margin-large-right uk-margin-top uk-margin-bottom"
+					/>
+					<input
+						type="button"
+						v-model:value="value[1]"
+						@click="selectMaterial1(1)"
+						class="shopbutton dark uk-margin-large-left uk-margin-large-right uk-margin-top uk-margin-bottom"
+					/>
+					<input
+						type="button"
+						v-model:value="value[2]"
+						@click="selectMaterial1(2)"
+						class="shopbutton dark uk-margin-large-left uk-margin-top uk-margin-bottom"
+					/>
+				</div>
+				<input
+					type="text"
+					id="craftnum"
+					class="uk-input uk-form-medium"
+					placeholder="请输入合成数量"
+				/>
+				<input
+					type="button"
+					value="炼金"
+					@click="clickCraft"
+					class="uk-width-1-1 uk-button-small dark buttonborder"
+				/>
+				<div id="selectMaterial" v-show="showMaterials">
+					<h5 style="position: absolute; left: 10px; top: 410px">
+						请选择合成材料：
+					</h5>
+					<div class="selectMaterial">
+						<input
+							type="button"
+							v-for="item in getMaterials()"
+							v-bind:value="item.name+'('+item.getAttribute()+')'"
+							@click="selectMaterial2(item.id)"
+							class="materialbutton secondary-light uk-margin-small-left uk-margin-small"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/ItemData.js"></script>
+		<script src="js/StatusMenu.js"></script>
+		<script src="js/StartMenu.js"></script>
+		<script src="js/MainMenu.js"></script>
+		<script src="js/StorageMenu.js"></script>
+		<script src="js/ShopMenu.js"></script>
+		<script src="js/MapData.js"></script>
+		<script src="js/PlantMenu.js"></script>
+		<script src="js/CraftMenu.js"></script>
+	</body>
+</html>
